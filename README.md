@@ -7,7 +7,7 @@
 <hr/>
 
 ## Used fucntion
-Library & Frameworks
++ Library & Frameworks
 
 none.
 
@@ -18,15 +18,18 @@ with
 
 <hr/>
 
-
-## About
-
-나만을 위한 나만에 의한 나만의 프로젝트. nft 포트폴리오 관리 사이트로 떡상할지도 모르니 라이센스 이용에 주의하자 ~~
-
-<hr/>
-
 ## Project members
 
 ### `banma1234(박범수)`
 
 project O.W.N.E.R
+
+<hr/>
+
+## 1주차
+### python 문제풀이
+python 언어를 사용해 백준 문제풀이를 진행하였습니다.
+
+## 2주차
+### html & css를 활용한 자기소개 페이지
+순수 html과 css만을 사용해 자신을 소개하는 간단한 페이지를 만들었습니다.
