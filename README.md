@@ -37,9 +37,13 @@ none.
 * #### Twitter 웹 크롤링 및 word 마이닝
 `snscrape`, `wordCloud` 모듈을 사용하여 `twitter`에서 `특정 키워드`가 본문에 포함된 트윗을 크롤링, 핵심 키워드와 `함께 언급된 관련 단어`들을 분석, 해당 단어의 언급 빈도수에 따라 `시각화된 자료`를 생성하는 프로그램을 작성했습니다.
 
+### 5주차
+* #### Vm 위에서 Ubuntu Linux 실행
+`Virtual Box`위에 `Ubuntu(Linux)`를 올린 후 서버 구동에 유용한 `Cockpit`, `Cloud panel`등을 설치해 서버를 제어했습니다.
+
 <hr/>
 
-## 📌 4주차 : Web Crawling
+## 📌 5주차 : Ubuntu 서버 세팅
 
 ### 🚗현대인을 위한 3줄요약.
 >  Window 환경에서 별다른 조작 없이 Virtual Box(가상머신)를 이용해 가상환경에서 ubuntu 리눅스를 설치, 각종 task를 수행할 수 있다.
