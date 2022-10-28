@@ -40,320 +40,159 @@ none.
 <hr/>
 
 ## 📌 4주차 : Web Crawling
+
 ### 🚗현대인을 위한 3줄요약.
->  `snscrape`, `wordCloud` 모듈을 사용하여 `twitter`에서 `특정 키워드`가 본문에 포함된 트윗을 크롤링, 핵심 키워드와 `함께 언급된 관련 단어`들을 분석, 해당 단어의 언급 빈도수에 따라 `시각화된 자료`를 생성하는 프로그램을 작성했습니다.
+>  Window 환경에서 별다른 조작 없이 Virtual Box(가상머신)를 이용해 가상환경에서 ubuntu 리눅스를 설치, 각종 task를 수행할 수 있다.
 
-* ### 사용된 모듈
-```python
-# 데이터 처리 모듈
-import pandas as pd
+***
 
-# 웹크롤링 관련모듈
-import snscrape.modules.twitter as sntwitter
-import itertools
-from nltk.corpus import stopwords
-from nltk.tokenize import word_tokenize
-import re
+## **📌 설치 및 정보**
 
-# wordCloud 모듈
-from wordcloud import WordCloud
-import matplotlib.pyplot as plt
+우선 실습에 필요한 것들(Vm, Ubuntu)를 설치하고 또 알아보도록 한다.
+
+***
+
+### 👉 Virtual Box
+Virtua Box가 무엇인지 알기 전에 `가상머신`이란 무엇인가 먼저 알 필요가 있다.
+
+`가상머신(Virtual Machine)`은 실제 하드웨어와 아무런 관련이 없는 가상의 컴퓨터로 하드웨어를 소프트웨어로 구현해 작동하게끔 한 것이다.
+
+가상머신을 사용하는 가장 큰 이유는 다음과 같다.
+
+* 다른 운영체제를 사용하는 경우( Windows >> Linux )
+* 독립된 작업공간이 필요한 경우( 보안상의 이유 )
+
+***
+
+>Virtual Box 설치링크 : https://www.virtualbox.org/
+
+`Virtual Box(가상머신)`는 오라클에서 만든 가상머신 솔루션으로 무료로 제공되는 오픈소스이다.
+
+링크를 타고 가면 세상 크게 `Download` 버튼이 있기 때문에 문제없이 설치파일을 받을 수 있다.
+
+![](https://velog.velcdn.com/images/banma1234/post/6d7cc76e-c2b7-4c9a-ae0a-ae95245f447e/image.png)
+
+설치파일을 실행한 후 설치가 완료될때 까지 `Yes/Next`를 계속 눌러준다.
+
+***
+
+### 👉 Ubuntu Linux 설치
+먼저 굳이 가상머신을 설치하면서까지 리눅스를 사용하는 이유를 알아보자.
+`리눅스(Linux)`는 리누스 토발즈가 `유닉스(Unix)` OS를 기반으로 만든 OS이다.
+
+유닉스를 기반으로 만들어졌기 때문에 다중 사용자, 다중 쓰레드, 멀티태스킹 등을 지원하는 `네트워크 운영체제(NOS)`이며 다음과 같은 특징을 가지고 있다.
+
+* 다중사용자, 다중작업을 지원하기 때문에 `서버`를 운영하기 가장 적합하다.
+* `오픈소스`이기 때문에 커뮤니티가 방대하다.
+* 기본적으로 `무료`이다.
+
+***
+
+> Ubuntu 설치 링크 : https://ubuntu.com/download/server
+
+리눅스에 대해 알았다면 우분투를 설치할 차례이다.
+
+![](https://velog.velcdn.com/images/banma1234/post/8b594a5c-77cb-4a0f-a506-e4abcb2a2ef6/image.png)
+
+링크를 타고 가면 여러 버전의 설치파일이 있을텐데 반드시 `22.04.1 LTS`버전을 다운받아야 한다.
+
+작성일 기준 최신버전 바로 아래단계인데 최신버전이 릴리즈된지 얼마 되지 않아 주변 프로그램이 호환되지 않는 이슈가 있기 때문이다.
+
+
+
+***
+
+## **📌 실습환경 설정**
+
+다운받은 Vm 위에서 안정적으로 ubuntu와 각종 서비스를 이용하기 위해 실습환경을 설정하도록 한다.
+
+***
+
+### 👉 Virtual Box에 ubuntu 올리기
+
+다음은 설치한 Vm에 `Ubuntu` OS를 올려보도록 하자.
+
+![](https://velog.velcdn.com/images/banma1234/post/ccb11d2f-957e-44d2-b068-c1636d3d1f0d/image.png)
+
+ `Virtual Box`를 처음 실행하면 다음과 같은 화면이 출력된다. 여기서 `새로 만들기(N)`를 클릭한 후 `전문가 모드`로 들어가 다음 옵션들을 제어한다.
+ 
+ * Name and Operating System
+ * Hardware
+ 
+![](https://velog.velcdn.com/images/banma1234/post/7a3a16fb-24ef-4b2f-9204-8d6b8913cc19/image.png)
+
+
+먼저 `Name and Operating System`에 들어가 설치한 ubuntu `iso 파일`을 그림에 표시된 영역에서 등록해준다.
+
+![](https://velog.velcdn.com/images/banma1234/post/18e31040-1c8c-46a0-9d48-22fcd25cd061/image.png)
+
+다음은 `하드웨어 성능` 차례이다.
+
+하드웨어 성능은 상황에 맞게 본인이 설정하면 되는데 대체로 `램 4GB`에 `4코어`정도면 왠만한 프로젝트를 무리없이 굴릴 수 있다.
+
+이후 실행된 터미널에 다음과 같은 코드를 입력해 ubuntu를 업데이트 해준다.
+
+```ubuntu
+$sudo apt update && sudo apt upgrade -y
 ```
 
-<hr/>
+### 🚗현대인을 위한 3줄요약.
+>  Window 환경에서 별다른 조작 없이 Virtual Box(가상머신)를 이용해 가상환경에서 ubuntu 리눅스를 설치, 각종 task를 수행할 수 있다.
 
-### 👉 트윗 긁어오기
-트윗을 긁어오기 위한 query 작성에는 다음과 같은 속성이 필요하다.
-* 검색할 키워드, 
-* 검색할 날짜 범위
+***
 
-각각 `search_word`, `start_day`, `end_day`에 저장한 후 쿼리를 작성한다.
-```python
-#검색하고 싶은 단어
-search_word = "안녕"
+## **📌 설치 및 정보**
 
-#검색하는 기간
-start_day = "2022-10-01"
-end_day = "2022-10-14"
+우선 실습에 필요한 것들(Cockpit, Cloud panel)을 설치하고 또 알아보도록 한다.
 
-search_query = search_word + ' since:' + start_day + ' until:' + end_day 
-```
-이후 작성한 query문을 `scraped`모듈을 통해 처리해준다. 
+***
 
-`sliced_scrapped_tweets`의 파라미터로 트윗을 긁어올 명령과 긁어올 트윗의 개수를 전달한다.
-```python
-#지정한 기간에서 검색하고 싶은 단어를 포함한 tweet를 취득
-scraped_tweets = sntwitter.TwitterSearchScraper(search_query).get_items()
-#처음부터 1000개의 tweets를 취득
-sliced_scraped_tweets = itertools.islice(scraped_tweets, 1000)
-```
+### 👉 Cockpit
+`Cockpit`은 리눅스를 `원격`에서 쉽게 관리하기 위한 툴이다.
 
-<hr/>
+보통 원격에서 접근한다고 하면 `SSH`를 떠올리기 마련인데 `SSH`를 사용하기엔 준비하는 프로젝트가 가벼울 때 사용된다.
 
-### 👉 데이터 전처리 & 정리
-이제 긁어온 데이터를 사용하기 쉽게 정돈할 차례이다. `pandas DataFrame` 모듈을 이용해 긁어온 데이터를 `pandas` 형식으로 정리한다. 
+![](https://velog.velcdn.com/images/banma1234/post/2c7420ed-ce8b-4f3a-bd57-d31b6767001d/image.png)
 
-그리고 해쉬태그/닉네임이 아닌 `본문`에 단어가 등록된 경우만을 위해 트윗의 `content` 라벨에 포함되어 있어야만 긁어오도록 하였다.
-
-```python
-#pandas DataFrame으로 변환
-df = pd.DataFrame(sliced_scraped_tweets)
-df = df[df['content'].str.contains('안녕|하이|반가워|안녕하세요')]
-```
-또한 트윗을 긁어올 때 필요없는 데이터는 미리 제거하기 위해 `stop_words`. 즉 `불용어`를 설정했다. 
-
-영어의 경우 기본적인 불용어들이 제공되지만 한글은 그렇지 않으므로 본인이 직접 지정해줘야 한다. 
-```python
-stop_words = " ~~~한글 불용어들~~~ "
-stop_words=stop_words.split(' ')
-```
-불용어 지정이 끝났다면 실제로 트윗에서 불용어들을 삭제해주는 함수를 작성할 차례이다.
-```python
-# 트위터분석을 위한 기본적인 텍스트 cleaning 함수
-def CleanText(readData, Num=True, Eng=True):
-    # Remove Retweets
-    text = re.sub('RT @[\w_]+: ', '', readData)
-    # Remove Mentions
-    text = re.sub('@[\w_]+', '', text)
-    # Remove or Replace URL
-    text = re.sub(r"http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+", ' ',
-                  text)  # http로 시작되는 url
-    text = re.sub(r"[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{2,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)", ' ',
-                  text)  # http로 시작되지 않는 url
-    # Remove only hashtag simbol "#" because hashtag contains huge information
-    text = re.sub(r'#', ' ', text)
-    # Remove Garbage Words (ex. &lt, &gt, etc)
-    text = re.sub('[&]+[a-z]+', ' ', text)
-    # Remove Special Characters
-    text = re.sub('[^0-9a-zA-Zㄱ-ㅎ가-힣]', ' ', text)
-    # Remove 출처 by yamada
-    text = re.sub(r"(출처.*)", ' ', text)
-    # Remove newline
-    text = text.replace('\n', ' ')
-
-    if Num is True:
-        # Remove Numbers
-        text = re.sub(r'\d+', ' ', text)
-
-    if Eng is True:
-        # Remove English
-        text = re.sub('[a-zA-Z]', ' ', text)
-
-    # Remove multi spacing & Reform sentence
-    text = ' '.join(text.split())
-
-    return text
-```
-보면 알겠지만 온갖 정규표현식으로 짬뽕이 되 무척이나 알아보기 힘들다. 대충 다음과 같은 역할을 한다고 알고만 있으면 되겠다.
-* `리트윗`, `멘션` 삭제
-* `해쉬태그`, `URL` 삭제
-* `쓰레기값`, `특수문자` 삭제
-* `줄바꿈`, `출처` 삭제
-
-또한 파라미터로 전달받은 `Num`, `Eng`이 `True`라면 해당하는 값(숫자, 알파벳)을 삭제해준다. 
-```python
-for tweet in df.content:
-  cleaned_tweet = []
-  # 한글 불용어 처리를 위해 Eng에 False값을 준다
-  cleaned_tweet_string = CleanText(tweet, Num=True, Eng=False)
-  tweet_tokens = word_tokenize(cleaned_tweet_string)
-  for token in tweet_tokens:
-    if token.lower() not in stop_words:
-      cleaned_tweet.append(token)
-
-  cleaned_tweets_all.append(cleaned_tweet)
-```
-마지막으로 트윗 하나하나를 다 불러와 불용어 제거 함수에 대입해준 후 시각화 자료 생성을 위해 `한줄의 string`으로 만들어 준다.
-
-한글 단어를 분석할 예정이니 `Num`은 `True`, `Eng`은 `False`를 전달해준다.
-
-이러한 과정들을 통틀어 `전처리 과정`이라고 한다.
-
-<hr/>
-
-### 👉 데이터 시각화
-`데이터 시각화`란 JSON, pandas와 같이 한눈에 파악하기 힘든 형태의 데이터를 한눈에 알아보기 쉽게 가공하는 것을 뜻한다.
-
-다양한 방법이 있지만 이번에는 `wordCloud` 모듈을 사용해 시각화 자료를 생성해보도록 하자.
-```python
-all_words = []
-for cleaned_tweet in cleaned_tweets_all:
-  for word in cleaned_tweet:
-    all_words.append(word)
-
-all_words_str = ' '.join(all_words)
-```
-`wordCloud`를 사용하기 위해서는 한줄로 묶은 데이터를에 띄워쓰기를 추가해 다시 가공해주어야 한다. 
-
-띄워쓰기가 있어야 모듈이 단어를 구분하기 때문이다.
-```python
-def generate_wordcloud(text): 
-    wordcloud = WordCloud(
-                          width=800, height=400,
-                          relative_scaling = 1.0,
-                          # 로컬환경에서 실행시 폰트를 지정해줘야 한다
-                          font_path='malgun',
-                          # 마찬가지로 제거하고 싶은 단어를 여기에 추가 입력
-                          stopwords = {'to', 'of'}
-                          ).generate(text)
-```
-이후 시각화 자료를 생성하는 함수를 작성한다. `WordCloud`의 속성값에 이미지의 특성값을 전달해준다. 
-
-이때 한글 데이터를 출력하기 위해선 반드시 `폰트지정`을 해주어야 한다.
-
-로컬환경에서 구동시 본인 pc의 `Font` 폴더에 있는 한글 폰트의 이름을 지정해주면 된다. 따로 폴더의 주소가 필요하진 않다.
-```python
-    fig = plt.figure(1, figsize=(8, 4))
-    plt.axis('off')
-    plt.imshow(wordcloud)
-    plt.axis("off")
-    plt.show()
-```
-이후 모듈을 실행할 코드를 작성하면 된다. 위와 같이 코드를 작성하면 실행 즉시 사진이 출력된다.
-```python
-cloud.to_file('파일명')
-```
-파일의 형태로 저장하고 싶다면 해당 코드를 삽입하면 된다.
-
-<hr/>
-
-### 👉 결과화면
-
-* 2018년 10. 01 ~ 10. 14
-![](https://velog.velcdn.com/images/banma1234/post/5fd18059-fc39-493e-97fe-66af0074d50d/image.png)
-
-* 2022년 10. 01 ~ 10. 14
-![](https://velog.velcdn.com/images/banma1234/post/d2171aeb-e5b8-45d9-89e7-b5a4d3c07bf9/image.png)
-
-<hr/>
+위 사진과 같이 관리자 페이지를 제공해주는데 이곳에서 다양한 기능을 수행할 수 있다.
 
 
-### 👉 전체코드
-```python
-import pandas as pd
-import snscrape.modules.twitter as sntwitter
-import itertools
-from nltk.corpus import stopwords
-from nltk.tokenize import word_tokenize
-import re
+이외에도 `자원/로그 모니터링` 같은 기능도 제공한다.
 
-# wordCloud 모듈
-from wordcloud import WordCloud
-import matplotlib.pyplot as plt
+***
 
-#=================================================================
+설치는 다른것 필요 없이 아래 코드만 입력하면 된다. 우분투의 기본 패키지에 포함되어있기 때문이다.
 
-# reference : Dr. 야마다 아키히코
-# https://colab.research.google.com/drive/14D9Zu4RN_fGABf-VRGooneIdsW16QqxP?hl=ko#scrollTo=8qfKxmWS2TCL
-
-#=================================================================
-
-# 트위터분석을 위한 기본적인 텍스트 cleaning 함수
-def CleanText(readData, Num=True, Eng=True):
-    # Remove Retweets
-    text = re.sub('RT @[\w_]+: ', '', readData)
-    # Remove Mentions
-    text = re.sub('@[\w_]+', '', text)
-    # Remove or Replace URL
-    text = re.sub(r"http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+", ' ',
-                  text)  # http로 시작되는 url
-    text = re.sub(r"[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{2,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)", ' ',
-                  text)  # http로 시작되지 않는 url
-    # Remove only hashtag simbol "#" because hashtag contains huge information
-    text = re.sub(r'#', ' ', text)
-    # Remove Garbage Words (ex. &lt, &gt, etc)
-    text = re.sub('[&]+[a-z]+', ' ', text)
-    # Remove Special Characters
-    text = re.sub('[^0-9a-zA-Zㄱ-ㅎ가-힣]', ' ', text)
-    # Remove 출처 by yamada
-    text = re.sub(r"(출처.*)", ' ', text)
-    # Remove newline
-    text = text.replace('\n', ' ')
-
-    if Num is True:
-        # Remove Numbers
-        text = re.sub(r'\d+', ' ', text)
-
-    if Eng is True:
-        # Remove English
-        text = re.sub('[a-zA-Z]', ' ', text)
-
-    # Remove multi spacing & Reform sentence
-    text = ' '.join(text.split())
-
-    return text
-
-#=================================================================
-
-
-#검색하고 싶은 단어
-search_word = "안녕"
-
-#검색하는 기간
-start_day = "2022-10-01"
-end_day = "2022-10-14"
-
-search_query = search_word + ' since:' + start_day + ' until:' + end_day 
-
-#지정한 기간에서 검색하고 싶은 단어를 포함한 tweet를 취득
-scraped_tweets = sntwitter.TwitterSearchScraper(search_query).get_items()
-
-#처음부터 1000개의 tweets를 취득
-sliced_scraped_tweets = itertools.islice(scraped_tweets, 1000)
-
-#pandas DataFrame으로 변환
-df = pd.DataFrame(sliced_scraped_tweets)
-df = df[df['content'].str.contains('안녕|하이|반가워|안녕하세요')]
-
-stop_words = " ~~~한글 불용어~~~"
-stop_words=stop_words.split(' ')
-
-# tweet 하나하나 불러오고 stopwords 제거
-cleaned_tweets_all = []
-
-for tweet in df.content:
-  cleaned_tweet = []
-  # 한글 불용어 처리를 위해 Eng에 False값을 준다
-  cleaned_tweet_string = CleanText(tweet, Num=True, Eng=False)
-  tweet_tokens = word_tokenize(cleaned_tweet_string)
-  for token in tweet_tokens:
-    if token.lower() not in stop_words:
-      cleaned_tweet.append(token)
-
-  cleaned_tweets_all.append(cleaned_tweet)
-
-# print(cleaned_tweet)
-
-
-#===============================================================
-
-# wordCloud 생성
-def generate_wordcloud(text): 
-    wordcloud = WordCloud(
-                          width=800, height=400,
-                          relative_scaling = 1.0,
-                          font_path='malgun', # coLab이 아닌 로컬환경에서 실행시 폰트를 지정해줘야 한다
-                          stopwords = {'to', 'of'} #제거하고 싶은 단어를 여기에 입력
-                          ).generate(text)
-    
-    fig = plt.figure(1, figsize=(8, 4))
-    plt.axis('off')
-    plt.imshow(wordcloud)
-    plt.axis("off")
-    plt.show()
-
-all_words = []
-for cleaned_tweet in cleaned_tweets_all:
-  for word in cleaned_tweet:
-    all_words.append(word)
-
-all_words_str = ' '.join(all_words)
-
-generate_wordcloud(all_words_str)
+```ubuntu
+$sudo apt-get install cockpit
+$sudo systemctl enable cokcpit
+$sudo ufw allow 9090/tcp
 ```
 
-<hr/>
+각각 설치, 자동실행, 포트오픈의 역할을 한다.
 
->* #### Reference By....
-### Dr. 야마다 아키히코
-https://colab.research.google.com/drive/14D9Zu4RN_fGABf-VRGooneIdsW16QqxP?hl=ko#scrollTo=8qfKxmWS2TCL
+***
+
+### 👉 Cloud panel 
+
+`Cloud panel`은 무료 소프트웨어로 서버를 제어하고 관리하는 툴이다.
+
+관리자 페이지를 제공하며 `Node.js`, `python`등 다양한 `언어`와 각종 `DB` 서비스(mySQL, mariaDB), `클라우드 서비스`와의 연계(AWS, firebase 등) 모두 가능하다.
+
+
+
+***
+
+>Cloud panel Docs : https://www.cloudpanel.io/docs/v2/getting-started/
+
+Cloud panel도 마찬가지로 설치파일을 갖는게 아니라 명령어로 설치한다.
+
+```ubuntu
+$apt update && apt -y upgrade && apt -y install curl wget sudo
+```
+
+***
+
+>#### 참고문서
+* https://teamlab.github.io/jekyllDecent/blog/tutorials/%EA%B0%80%EC%83%81%EB%A8%B8%EC%8B%A0(VirtualBox)%EC%9D%84-%EC%9D%B4%EC%9A%A9%ED%95%98%EC%97%AC-%EB%A6%AC%EB%88%85%EC%8A%A4-%EC%8B%A4%EC%8A%B5-%ED%99%98%EA%B2%BD-%EB%A7%8C%EB%93%A4%EA%B8%B0 ( 설치 관련자료 )
+* https://blog.dalso.org/linux/ubuntu-20-04-lts/17453 ( Cockpit 관련 자료 )
